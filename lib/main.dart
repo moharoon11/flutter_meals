@@ -17,6 +17,7 @@ void main() {
     MaterialApp(
       theme: theme,
       home: const CategoriesScreen(),
+      debugShowCheckedModeBanner: false,
     ),
   );
 }
