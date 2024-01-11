@@ -15,7 +15,7 @@ class CategoryGridItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: () {},
+      onTap: selectCategory,
       borderRadius: BorderRadius.circular(40),
       splashColor: const Color.fromARGB(178, 255, 18, 2),
       child: Container(
