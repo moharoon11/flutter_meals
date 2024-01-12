@@ -27,9 +27,9 @@ class MealsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Widget content = Center(
-      child: Column(children: [
+      child: Column(mainAxisSize: MainAxisSize.min, children: [
         Text(
-          'Uh o... nothing here.....',
+          'Uh oh... nothing here.....',
           style: Theme.of(context).textTheme.headlineLarge!.copyWith(
                 color: Theme.of(context).colorScheme.onBackground,
               ),
