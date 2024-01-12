@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:meals/models/meals.dart';
 import 'package:meals/screens/categories.dart';
 import 'package:meals/screens/meals.dart';
+import 'package:meals/widget/main_drawer.dart';
 
 class Tabs extends StatefulWidget {
   const Tabs({super.key});
@@ -24,9 +25,13 @@ class _TabsState extends State<Tabs> {
     final isExisting = favouriteMeal.contains(meal);
 
     if (isExisting) {
-      favouriteMeal.remove(meal);
+      setState(() {
+        favouriteMeal.remove(meal);
+      });
     } else {
-      favouriteMeal.add(meal);
+      setState(() {
+        favouriteMeal.add(meal);
+      });
     }
   }
 
@@ -47,7 +52,10 @@ class _TabsState extends State<Tabs> {
     }
 
     return Scaffold(
-      appBar: AppBar(title: Text(activePageTitle)),
+      appBar: AppBar(
+        title: Text(activePageTitle),
+      ),
+      drawer: const MainDrawer(),
       body: activePage,
       bottomNavigationBar: BottomNavigationBar(
         onTap: onSelectTab,
