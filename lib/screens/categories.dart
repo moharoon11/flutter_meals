@@ -21,6 +21,7 @@ class CategoriesScreen extends StatelessWidget {
     Navigator.of(context).push(
       MaterialPageRoute(
         builder: (ctx) => MealsScreen(
+          title: category.title,
           meals: categoryfilteredMeals,
           toggleFavouriteMeal: toggleFavouriteMeal,
         ),
@@ -36,7 +37,7 @@ class CategoriesScreen extends StatelessWidget {
       gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
         crossAxisCount: 2,
         crossAxisSpacing: 20,
-        childAspectRatio: 1.5,
+        childAspectRatio: 3 / 2,
         mainAxisSpacing: 20,
       ),
       children: [

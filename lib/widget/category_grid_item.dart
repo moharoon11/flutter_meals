@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 import 'package:meals/models/category.dart';
 
@@ -19,7 +20,6 @@ class CategoryGridItem extends StatelessWidget {
       borderRadius: BorderRadius.circular(40),
       splashColor: const Color.fromARGB(178, 255, 18, 2),
       child: Container(
-        padding: const EdgeInsets.symmetric(vertical: 40),
         decoration: BoxDecoration(
           gradient: LinearGradient(
             colors: [
@@ -29,14 +29,16 @@ class CategoryGridItem extends StatelessWidget {
             begin: Alignment.topLeft,
             end: Alignment.bottomRight,
           ),
-          borderRadius: BorderRadius.circular(40),
+          borderRadius: BorderRadius.circular(15),
         ),
-        child: Text(
-          category.title,
-          style: Theme.of(context).textTheme.titleLarge!.copyWith(
-                color: Theme.of(context).colorScheme.onBackground,
-              ),
-          textAlign: TextAlign.center,
+        child: Center(
+          child: Text(
+            category.title,
+            style: Theme.of(context).textTheme.titleLarge!.copyWith(
+                  color: Theme.of(context).colorScheme.onBackground,
+                  fontSize: 20,
+                ),
+          ),
         ),
       ),
     );
