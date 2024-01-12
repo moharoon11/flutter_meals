@@ -21,6 +21,16 @@ class _TabsState extends State<Tabs> {
     });
   }
 
+  _showMessage(String message) {
+    ScaffoldMessenger.of(context).clearSnackBars();
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+          content: Text(
+        message,
+      )),
+    );
+  }
+
   toggleFavouriteMeal(Meal meal) {
     final isExisting = favouriteMeal.contains(meal);
 
@@ -28,10 +38,12 @@ class _TabsState extends State<Tabs> {
       setState(() {
         favouriteMeal.remove(meal);
       });
+      _showMessage('Meal is no longer a favourite');
     } else {
       setState(() {
         favouriteMeal.add(meal);
       });
+      _showMessage('Meal added to favourite');
     }
   }
 
