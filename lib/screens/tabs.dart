@@ -32,15 +32,17 @@ class _TabsState extends State<Tabs> {
     );
   }
 
-  void _selectScreen(String identifier) {
+  void _selectScreen(String identifier) async {
     Navigator.of(context).pop();
 
     if (identifier == 'filters') {
-      Navigator.of(context).pushReplacement(
+      final result = await Navigator.of(context).push<Map<Filters, bool>>(
         MaterialPageRoute(
           builder: (context) => const FilterScreen(),
         ),
       );
+
+      print(result);
     }
   }
 
@@ -69,11 +71,10 @@ class _TabsState extends State<Tabs> {
 
     if (selectedIndex == 1) {
       activePage = MealsScreen(
-        title: '',
         meals: favouriteMeal,
         toggleFavouriteMeal: toggleFavouriteMeal,
       );
-      activePageTitle = 'Meals';
+      activePageTitle = 'Favourite Meals';
     }
 
     return Scaffold(

@@ -6,12 +6,10 @@ import 'package:meals/widget/meal_item.dart';
 class MealsScreen extends StatelessWidget {
   const MealsScreen({
     super.key,
-    required this.title,
     required this.meals,
     required this.toggleFavouriteMeal,
   });
 
-  final String title;
   final List<Meal> meals;
   final void Function(Meal meal) toggleFavouriteMeal;
 
@@ -60,11 +58,6 @@ class MealsScreen extends StatelessWidget {
     }
 
     return Scaffold(
-      appBar: AppBar(
-        title: Text(
-          title,
-        ),
-      ),
       body: content,
     );
   }

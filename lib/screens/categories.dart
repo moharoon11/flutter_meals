@@ -19,7 +19,6 @@ class CategoriesScreen extends StatelessWidget {
     Navigator.of(context).push(
       MaterialPageRoute(
         builder: (ctx) => MealsScreen(
-          title: category.title,
           meals: filteredMeals,
           toggleFavouriteMeal: toggleFavouriteMeal,
         ),
@@ -30,28 +29,23 @@ class CategoriesScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          title: const Text(
-            'Flutter Meals',
-          ),
-        ),
         body: GridView(
-          padding: const EdgeInsets.all(20),
-          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-            crossAxisCount: 2,
-            crossAxisSpacing: 20,
-            childAspectRatio: 1.5,
-            mainAxisSpacing: 20,
+      padding: const EdgeInsets.all(20),
+      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+        crossAxisCount: 2,
+        crossAxisSpacing: 20,
+        childAspectRatio: 1.5,
+        mainAxisSpacing: 20,
+      ),
+      children: [
+        for (var category in availableCategories)
+          CategoryGridItem(
+            category: category,
+            selectCategory: () {
+              _selectCategory(context, category);
+            },
           ),
-          children: [
-            for (var category in availableCategories)
-              CategoryGridItem(
-                category: category,
-                selectCategory: () {
-                  _selectCategory(context, category);
-                },
-              ),
-          ],
-        ));
+      ],
+    ));
   }
 }
