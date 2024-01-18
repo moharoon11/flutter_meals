@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:meals/data/dummy_data.dart';
 import 'package:meals/models/meals.dart';
+import 'package:meals/providers/favourite_meals_provider.dart';
+import 'package:meals/providers/filter_meals_provider.dart';
 import 'package:meals/screens/categories.dart';
 import 'package:meals/screens/filters.dart';
 import 'package:meals/screens/meals.dart';
@@ -13,126 +16,68 @@ const kInitialFilters = {
   Filters.vegan: false,
 };
 
-class Tabs extends StatefulWidget {
-  const Tabs({super.key});
+class TabsScreen extends ConsumerStatefulWidget {
+  const TabsScreen({super.key});
 
   @override
-  State<Tabs> createState() => _TabsState();
+  ConsumerState<TabsScreen> createState() {
+    return _TabsScreenState();
+  }
 }
 
-class _TabsState extends State<Tabs> {
-  int selectedIndex = 0;
-  List<Meal> favouriteMeal = [];
-  Map<Filters, bool> _selectedFilters = kInitialFilters;
+class _TabsScreenState extends ConsumerState<TabsScreen> {
+  int _selectedPageIndex = 0;
 
-  onSelectTab(index) {
+  void _selectPage(int index) {
     setState(() {
-      selectedIndex = index;
+      _selectedPageIndex = index;
     });
   }
 
-  void _showMessage(String message) {
-    ScaffoldMessenger.of(context).clearSnackBars();
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-          content: Text(
-        message,
-      )),
-    );
-  }
-
-  void _selectScreen(String identifier) async {
+  void _setScreen(String identifier) async {
     Navigator.of(context).pop();
-
     if (identifier == 'filters') {
-      final result = await Navigator.of(context).push<Map<Filters, bool>>(
+      await Navigator.of(context).push<Map<Filter, bool>>(
         MaterialPageRoute(
-          builder: (context) => FilterScreen(
-            currentFilters: _selectedFilters,
-          ),
+          builder: (ctx) => const FiltersScreen(),
         ),
       );
-
-      setState(() {
-        _selectedFilters = result ?? kInitialFilters;
-      });
-    }
-  }
-
-  toggleFavouriteMeal(Meal meal) {
-    final isExisting = favouriteMeal.contains(meal);
-
-    if (isExisting) {
-      setState(() {
-        favouriteMeal.remove(meal);
-      });
-      _showMessage('Meal is no longer a favourite');
-    } else {
-      setState(() {
-        favouriteMeal.add(meal);
-      });
-      _showMessage('Meal added to favourite');
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    List<Meal> availableMeals = dummyMeals.where((meals) {
-      if (_selectedFilters[Filters.glutonFree]! && !meals.isGlutenFree) {
-        return false;
-      }
+    final availableMeals = ref.watch(filteredMealsProvider);
 
-      if (_selectedFilters[Filters.lactosFree]! && !meals.isLactoseFree) {
-        return false;
-      }
+    Widget activePage = CategoriesScreen(availableMeals: availableMeals);
+    var activePageTitle = 'Categories';
 
-      if (_selectedFilters[Filters.vegan]! && !meals.isVegan) {
-        return false;
-      }
-
-      if (_selectedFilters[Filters.vegeterian]! && !meals.isVegetarian) {
-        return false;
-      }
-
-      return true;
-    }).toList();
-
-    Widget activePage = CategoriesScreen(
-      toggleFavouriteMeal: toggleFavouriteMeal,
-      filteredMeals: availableMeals,
-    );
-    String activePageTitle = 'Categories';
-
-    if (selectedIndex == 1) {
+    if (_selectedPageIndex == 1) {
+      final favoriteMeals = ref.watch(favouriteMealsProvider);
       activePage = MealsScreen(
-        meals: favouriteMeal,
-        toggleFavouriteMeal: toggleFavouriteMeal,
+        meals: favoriteMeals,
       );
-      activePageTitle = 'Favourite Meals';
+      activePageTitle = 'Your Favorites';
     }
 
     return Scaffold(
       appBar: AppBar(
         title: Text(activePageTitle),
       ),
-      drawer: MainDrawer(
-        selectScreen: _selectScreen,
-      ),
+      drawer: MainDrawer(selectScreen: _setScreen),
       body: activePage,
       bottomNavigationBar: BottomNavigationBar(
-        onTap: onSelectTab,
-        currentIndex: selectedIndex,
+        onTap: _selectPage,
+        currentIndex: _selectedPageIndex,
         items: const [
           BottomNavigationBarItem(
             icon: Icon(Icons.set_meal),
             label: 'Categories',
           ),
           BottomNavigationBarItem(
-            icon: Icon(
-              Icons.favorite,
-            ),
-            label: 'Favourites',
-          )
+            icon: Icon(Icons.star),
+            label: 'Favorites',
+          ),
         ],
       ),
     );
