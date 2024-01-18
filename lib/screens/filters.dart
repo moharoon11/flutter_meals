@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:meals/providers/filter_meals_provider.dart';
-import 'package:riverpod/riverpod.dart';
 
 enum Filters {
   glutonFree,
